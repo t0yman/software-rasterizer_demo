@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "color.hpp"
+#include "point2.hpp"
 
 class PpmImage
 {
@@ -19,6 +20,8 @@ public:
     PpmImage& operator=(const PpmImage&) = default;
 
     ~PpmImage() = default;
+
+    void DrawLine(const Point2& a, const Point2& b);
 
     void Write(std::string filename) const;
 
