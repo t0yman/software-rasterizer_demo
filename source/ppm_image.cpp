@@ -1,5 +1,8 @@
 #include "ppm_image.hpp"
 
+#include <array>
+#include <algorithm>
+
 void PpmImage::DrawLine(const Point2& a, const Point2& b)
 {
     const double dx = b.x - a.x;  // the change in x direction (measured in number of pixels)
@@ -29,6 +32,42 @@ void PpmImage::DrawTriangle(const Point2& a, const Point2& b, const Point2& c)
     DrawLine(a, b);
     DrawLine(b, c);
     DrawLine(c, a);
+}
+
+void PpmImage::DrawFilledTriangle(const Point2& a, const Point2& b, const Point2& c, const Color& color)
+{
+    if (a.y == b.y && a.y == c.y)  // degenerate case: all three vertices have same y coordinate, the triangle is completely flat
+    {
+        // detected completely flat triangle, draw a magenta pixel at the first vertex to indicate detection
+        SetPixel(static_cast<int>(a.x), static_cast<int>(a.y), Color{1.0, 0.0, 1.0});
+
+        return;
+    }
+
+    std::array<Point2, 3> pointList{a, b, c};
+
+    // mark vertices to verify sorting: bottom=red, middle=green, top=blue
+    SetPixel(static_cast<int>(pointList[0].x), static_cast<int>(pointList[0].y), Color{1.0, 0.0, 0.0});
+    SetPixel(static_cast<int>(pointList[1].x), static_cast<int>(pointList[1].y), Color{0.0, 1.0, 0.0});
+    SetPixel(static_cast<int>(pointList[2].x), static_cast<int>(pointList[2].y), Color{0.0, 0.0, 1.0});
+
+    std::sort(pointList.begin(), pointList.end(), [](const Point2& a, const Point2& b) -> bool { return (a.y <= b.y); });
+
+    if (pointList[0].y == pointList[1].y)  // if bottomPoint.y == middlePoint.y, then you have a flat-bottom triangle
+    {
+        // detected flat-bottom triangle, mark top vertex yellow to indicate detection
+        SetPixel(static_cast<int>(pointList[2].x), static_cast<int>(pointList[2].y), Color{1.0, 1.0, 0.0});
+    }
+    else if (pointList[1].y == pointList[2].y)  // else if middlePoint.y == topPoint.y, then you have a flat-top triangle
+    {
+        // detected flat-top triangle, mark bottom vertex cyan to indicate detection
+        SetPixel(static_cast<int>(pointList[0].x), static_cast<int>(pointList[0].y), Color{0.0, 1.0, 1.0});
+    }
+    else // otherwise all three vertices have different y coordinates, so split the triangle into two parts
+    {
+        // detected general-case triangle, mark middle vertex white to indicate detection
+        SetPixel(static_cast<int>(pointList[1].x), static_cast<int>(pointList[1].y), Color{1.0, 1.0, 1.0});
+    }
 }
 
 void PpmImage::Write(std::string filename) const

@@ -23,6 +23,7 @@ public:
 
     void DrawLine(const Point2& a, const Point2& b);
     void DrawTriangle(const Point2& a, const Point2& b, const Point2& c);
+    void DrawFilledTriangle(const Point2& a, const Point2& b, const Point2& c, const Color& color);
 
     void Write(std::string filename) const;
 
