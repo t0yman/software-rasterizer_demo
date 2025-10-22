@@ -55,24 +55,39 @@ void PpmImage::DrawFilledTriangle(const Point2& a, const Point2& b, const Point2
 
     if (pointList[0].y == pointList[1].y)  // if bottomPoint.y == middlePoint.y, then you have a flat-bottom triangle
     {
-        const Point2 bottomLeft = (pointList[0].x <= pointList[1].x ? pointList[0] : pointList[1]);
-        const Point2 bottomRight = (pointList[0].x <= pointList[1].x ? pointList[1] : pointList[0]);
-        const Point2 top = pointList[2];
+        const Point2& bottomLeft = (pointList[0].x <= pointList[1].x ? pointList[0] : pointList[1]);
+        const Point2& bottomRight = (pointList[0].x <= pointList[1].x ? pointList[1] : pointList[0]);
+        const Point2& top = pointList[2];
 
         DrawFilledFlatBottomTriangle(bottomLeft, bottomRight, top, color);
     }
     else if (pointList[1].y == pointList[2].y)  // else if middlePoint.y == topPoint.y, then you have a flat-top triangle
     {
-        const Point2 topLeft = (pointList[1].x <= pointList[2].x ? pointList[1] : pointList[2]);
-        const Point2 topRight = (pointList[1].x <= pointList[2].x ? pointList[2] : pointList[1]);
-        const Point2 bottom = pointList[0];
+        const Point2& topLeft = (pointList[1].x <= pointList[2].x ? pointList[1] : pointList[2]);
+        const Point2& topRight = (pointList[1].x <= pointList[2].x ? pointList[2] : pointList[1]);
+        const Point2& bottom = pointList[0];
 
         DrawFilledFlatTopTriangle(topLeft, topRight, bottom, color);
     }
     else // otherwise all three vertices have different y coordinates, so split the triangle into two parts
     {
-        // detected general-case triangle, mark middle vertex white to indicate detection
-        SetPixel(static_cast<int>(pointList[1].x), static_cast<int>(pointList[1].y), Color{1.0, 1.0, 1.0});
+        const Point2& top = pointList[2];
+        const Point2& middle = pointList[1];
+        const Point2& bottom = pointList[0];
+
+        const double interpolationFactor = (middle.y - bottom.y) / (top.y - bottom.y);  // interpolationFactor represents how far along the long edge the middle y coordinate is
+
+        // use interpolationFactor to computer where the long edge of the triangle intersects y = middle.y
+        const double splitXLocation = bottom.x + interpolationFactor * (top.x - bottom.x);
+        const Point2 splitLocation{splitXLocation, middle.y};
+
+        const Point2& topLeft = (middle.x < splitLocation.x ? middle : splitLocation);
+        const Point2& topRight = (middle.x < splitLocation.x ? splitLocation : middle);
+        DrawFilledFlatTopTriangle(topLeft, topRight, bottom, color);
+
+        const Point2& bottomLeft = (middle.x < splitLocation.x ? middle : splitLocation);
+        const Point2& bottomRight = (middle.x < splitLocation.x ? splitLocation : middle);
+        DrawFilledFlatBottomTriangle(bottomLeft, bottomRight, top, color);
     }
 }
 
