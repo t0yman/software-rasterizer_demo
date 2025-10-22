@@ -22,6 +22,7 @@ public:
     ~PpmImage() = default;
 
     void DrawLine(const Point2& a, const Point2& b);
+    void DrawTriangle(const Point2& a, const Point2& b, const Point2& c);
 
     void Write(std::string filename) const;
 

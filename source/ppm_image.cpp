@@ -24,6 +24,13 @@ void PpmImage::DrawLine(const Point2& a, const Point2& b)
     }
 }
 
+void PpmImage::DrawTriangle(const Point2& a, const Point2& b, const Point2& c)
+{
+    DrawLine(a, b);
+    DrawLine(b, c);
+    DrawLine(c, a);
+}
+
 void PpmImage::Write(std::string filename) const
 {
     std::ofstream imageFile{filename.append(".ppm")};
