@@ -5,44 +5,44 @@
 
 int main()
 {
-    const int width = 500;
-    const int height = 500;
+    const int width = 600;
+    const int height = 600;
 
     PpmImage ppmImage{width, height};
 
     ppmImage.DrawFilledTriangle(
-        Point2{50.0, 50.0},   // bottom left
-        Point2{200.0, 50.0},  // bottom right  
-        Point2{125.0, 200.0}, // top
-        Color{1.0, 0.0, 0.0}  // bright red
+        Point2{50.0, 50.0},
+        Point2{200.0, 50.0},
+        Point2{100.0, 400.0},
+        Color{1.0, 0.0, 0.0}
     );
 
     ppmImage.DrawFilledTriangle(
-        Point2{375.0, 50.0},  // bottom
-        Point2{300.0, 200.0}, // top left
-        Point2{450.0, 200.0}, // top right
-        Color{0.0, 0.0, 1.0}  // bright blue
+        Point2{450.0, 50.0},
+        Point2{300.0, 200.0},
+        Point2{400.0, 400.0},
+        Color{0.0, 1.0, 0.0}
     );
 
     ppmImage.DrawFilledTriangle(
-        Point2{50.0, 300.0},   // bottom left
-        Point2{200.0, 300.0},  // bottom right
-        Point2{125.0, 450.0},  // top
-        Color{0.0, 1.0, 0.0}   // bright green
+        Point2{500.0, 450.0},
+        Point2{520.0, 480.0},
+        Point2{550.0, 580.0},
+        Color{1.0, 1.0, 0.0}
     );
 
     ppmImage.DrawFilledTriangle(
-        Point2{375.0, 300.0},  // bottom
-        Point2{300.0, 450.0},  // top left
-        Point2{450.0, 450.0},  // top right
-        Color{1.0, 1.0, 0.0}   // bright yellow
+        Point2{50.0, 450.0},
+        Point2{80.0, 550.0},
+        Point2{100.0, 580.0},
+        Color{1.0, 0.0, 1.0}
     );
 
     ppmImage.DrawFilledTriangle(
-        Point2{50.0, 240.0},   // bottom left
-        Point2{450.0, 240.0},  // bottom right
-        Point2{250.0, 280.0},  // top
-        Color{0.0, 1.0, 1.0}   // cyan
+        Point2{350.0, 450.0},
+        Point2{420.0, 500.0},
+        Point2{380.0, 580.0},
+        Color{0.0, 1.0, 1.0}
     );
 
     ppmImage.Write("output");
