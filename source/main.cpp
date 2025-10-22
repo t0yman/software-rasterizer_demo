@@ -1,3 +1,6 @@
+#include <cmath>
+
+#include "point2.hpp"
 #include "ppm_image.hpp"
 
 int main()
@@ -6,9 +9,13 @@ int main()
     const int height = 200;
 
     PpmImage ppmImage{width, height};
-    ppmImage.SetPixel(50, 50, Color{0.0, 0.0, 1.0});
-    ppmImage.SetPixel(150, 50, Color{1.0, 0.0, 1.0});
-    ppmImage.SetPixel(50, 150, Color{1.0, 1.0, 0.0});
-    ppmImage.SetPixel(150, 150, Color{1.0, 0.0, 0.0});
+
+    ppmImage.DrawLine(Point2{0.0, 0.0}, Point2{static_cast<double>(width - 1), static_cast<double>(height - 1)});
+    ppmImage.DrawLine(Point2{0.0, static_cast<double>(height - 1)}, Point2{static_cast<double>(width - 1), 0.0});
+    ppmImage.DrawLine(Point2{0.0, static_cast<double>(height / 2)}, Point2{static_cast<double>(width - 1), static_cast<double>(height / 2)});
+    ppmImage.DrawLine(Point2{static_cast<double>(width / 2), static_cast<double>(height - 1)}, Point2{static_cast<double>(width / 2), static_cast<double>(0.0)});
+
     ppmImage.Write("output");
+
+    return 0;
 }
