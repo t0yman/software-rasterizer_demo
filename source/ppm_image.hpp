@@ -24,6 +24,8 @@ public:
     void DrawLine(const Point2& a, const Point2& b);
     void DrawTriangle(const Point2& a, const Point2& b, const Point2& c);
     void DrawFilledTriangle(const Point2& a, const Point2& b, const Point2& c, const Color& color);
+    void DrawFilledFlatBottomTriangle(const Point2& bottomLeft, const Point2& bottomRight, const Point2& top, const Color& color);
+    void DrawFilledFlatTopTriangle(const Point2& topLeft, const Point2& topRight, const Point2& bottom, const Color& color);
 
     void Write(std::string filename) const;
 
