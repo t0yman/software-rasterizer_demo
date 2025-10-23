@@ -38,18 +38,10 @@ void PpmImage::DrawFilledTriangle(const Point2& a, const Point2& b, const Point2
 {
     if (a.y == b.y && a.y == c.y)  // degenerate case: all three vertices have same y coordinate, the triangle is completely flat
     {
-        // detected completely flat triangle, draw a magenta pixel at the first vertex to indicate detection
-        SetPixel(static_cast<int>(a.x), static_cast<int>(a.y), Color{1.0, 0.0, 1.0});
-
         return;
     }
 
     std::array<Point2, 3> pointList{a, b, c};
-
-    // mark vertices to verify sorting: bottom=red, middle=green, top=blue
-    SetPixel(static_cast<int>(pointList[0].x), static_cast<int>(pointList[0].y), Color{1.0, 0.0, 0.0});
-    SetPixel(static_cast<int>(pointList[1].x), static_cast<int>(pointList[1].y), Color{0.0, 1.0, 0.0});
-    SetPixel(static_cast<int>(pointList[2].x), static_cast<int>(pointList[2].y), Color{0.0, 0.0, 1.0});
 
     std::sort(pointList.begin(), pointList.end(), [](const Point2& a, const Point2& b) -> bool { return (a.y <= b.y); });
 
